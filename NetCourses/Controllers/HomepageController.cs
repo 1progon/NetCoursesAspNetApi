@@ -25,7 +25,8 @@ public class HomepageController : ControllerBase
                 // get homepage jobs
                 Jobs = await _context.Jobs
                     .Include(j => j.Paid)
-                    .OrderBy(j => j.Id)
+                    .Include(j => j.Company)
+                    .OrderByDescending(j => j.Id)
                     .Skip(0)
                     .Take(5)
                     .ToListAsync(),
