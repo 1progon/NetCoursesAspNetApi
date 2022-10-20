@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using NetCourses.Data;
+using NetCourses.JsonConverters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,11 @@ builder.Services.AddNpgsql<AppDbContext>(connectionString);
 
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
-        o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    {
+        o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        o.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+        o.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
