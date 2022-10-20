@@ -57,7 +57,9 @@ public class JobsController : ControllerBase
     {
         if (!_context.Jobs.Any()) return NotFound();
 
-        var job = await _context.Jobs.FindAsync(id);
+        var job = await _context.Jobs
+            .Include(j => j.Company)
+            .SingleOrDefaultAsync(j => j.Id == id);
 
         if (job == null) return NotFound();
 
