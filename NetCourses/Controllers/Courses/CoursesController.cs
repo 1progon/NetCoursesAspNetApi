@@ -37,16 +37,16 @@ public class CoursesController : ControllerBase
         };
     }
 
-    // GET: api/v1/Courses/slug
-    [HttpGet("{slug}")]
-    public async Task<ActionResult<Course>> GetCourse(string slug)
+    // GET: api/v1/Courses/5
+    [HttpGet("{id:long}")]
+    public async Task<ActionResult<Response<Course>>> GetCourse(long id)
     {
         if (!_context.Courses.Any()) return NotFound();
 
         var course = await _context.Courses
             .Include(c
                 => c.CourseVideos.OrderBy(v => v.Order))
-            .FirstOrDefaultAsync(c => c.Slug == slug);
+            .SingleOrDefaultAsync(c => c.Id == id);
 
         if (course == null) return NotFound();
 
