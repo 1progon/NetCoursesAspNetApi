@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCourses.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetCourses.DB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220917132740_AddPostedDateByAuthorColumnsToCoursesTable")]
+    partial class AddPostedDateByAuthorColumnsToCoursesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,9 +40,6 @@ namespace NetCourses.DB.Migrations
 
                     b.Property<int?>("Foundation")
                         .HasColumnType("integer");
-
-                    b.Property<string>("LogoImagePath")
-                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()

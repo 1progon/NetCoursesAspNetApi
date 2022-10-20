@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCourses.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetCourses.DB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220917131516_RemoveUniqueSlugColumnsFromJobsCompaniesCoursesAndCoursesVideosTables")]
+    partial class RemoveUniqueSlugColumnsFromJobsCompaniesCoursesAndCoursesVideosTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,9 +40,6 @@ namespace NetCourses.DB.Migrations
 
                     b.Property<int?>("Foundation")
                         .HasColumnType("integer");
-
-                    b.Property<string>("LogoImagePath")
-                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -85,14 +84,8 @@ namespace NetCourses.DB.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateOnly>("PostedByAuthor")
-                        .HasColumnType("date");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateOnly?>("UpdatedByAuthor")
-                        .HasColumnType("date");
 
                     b.Property<string>("VideoLink")
                         .HasColumnType("text");
