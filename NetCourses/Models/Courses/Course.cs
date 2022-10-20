@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using NetCourses.Enums.Courses;
 
 namespace NetCourses.Models.Courses;
@@ -9,6 +10,9 @@ public class Course : BaseModel
 
     public string? VideoLink { get; set; }
     public CourseVideoSource? VideoSource { get; set; }
+
+    public DateOnly PostedByAuthor { get; set; }
+    public DateOnly? UpdatedByAuthor { get; set; }
 
     public string Description { get; set; } = null!;
     public string? Article { get; set; }
