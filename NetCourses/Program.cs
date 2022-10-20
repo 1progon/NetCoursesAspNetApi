@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Get connection string from appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("AppDbContext");
 
 
 // Db Context
