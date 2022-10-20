@@ -51,7 +51,11 @@ public class CoursesController : ControllerBase
         if (course == null) return NotFound();
 
 
-        return course;
+        return new Response<Course>()
+        {
+            Data = course,
+            ResponseCode = 200
+        };
     }
 
     // PUT: api/Courses/5
