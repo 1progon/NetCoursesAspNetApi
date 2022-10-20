@@ -111,7 +111,7 @@ public class JobsController : ControllerBase
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> DeleteJob(long id)
     {
-        if (_context.Jobs == null) return NotFound();
+        if (!_context.Jobs.Any()) return NotFound();
 
         var job = await _context.Jobs.FindAsync(id);
         if (job == null) return NotFound();
