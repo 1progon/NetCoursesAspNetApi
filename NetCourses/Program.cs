@@ -36,7 +36,10 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 
-app.UseCors(b => b.WithOrigins("http://localhost:4200"));
+app.UseCors(b =>
+    b.WithOrigins("http://localhost:4200", "https://dotnetcase.com")
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 
 
 // Configure the HTTP request pipeline.
