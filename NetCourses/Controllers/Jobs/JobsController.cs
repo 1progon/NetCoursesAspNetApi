@@ -1,7 +1,9 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetCourses.Data;
 using NetCourses.Dto;
+using NetCourses.Dto.Jobs;
 using NetCourses.Models;
 using NetCourses.Models.Companies;
 using NetCourses.Models.Jobs;
@@ -93,18 +95,62 @@ public class JobsController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Jobs
-    // To protect from over posting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    // POST: api/v1/Jobs
     [HttpPost]
-    public async Task<ActionResult<Job>> PostJob(Job job)
+    public async Task<ActionResult<Response<Job>>> PostJob(
+        [FromForm] string form, [FromForm] IFormFile file)
     {
-        if (!_context.Jobs.Any())
-            return Problem("'Jobs'  is null.");
+        var jobForm = JsonSerializer.Deserialize<PostJobDto>(form);
+
+        if (jobForm == null) return UnprocessableEntity();
+
+        // get company from db or create
+        var company = await _context.Companies
+            .SingleOrDefaultAsync(c => c.Name == jobForm.CompanyName);
+        if (company == null)
+        {
+            company = new Company
+            {
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Name = jobForm.CompanyName,
+                LogoImagePath = await SaveFile(file)
+            };
+            _context.Companies.Add(company);
+        }
+
+
+        var job = new Job
+        {
+            Name = jobForm.Title,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            Level = jobForm.LevelExpertise,
+            Description = jobForm.Description,
+            Location = jobForm.Location,
+            Url = jobForm.UrlToJob,
+            Tags = jobForm.Tags?.Split(","),
+            Company = company,
+            
+        };
 
         _context.Jobs.Add(job);
-        await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetJob", new {id = job.Id}, job);
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            return Problem("not saved to db: " + e.InnerException);
+        }
+
+
+        return new Response<Job>()
+        {
+            Data = job,
+            ResponseCode = 200,
+        };
     }
 
     // DELETE: api/Jobs/5
@@ -125,5 +171,27 @@ public class JobsController : ControllerBase
     private bool JobExists(long id)
     {
         return (_context.Jobs?.Any(e => e.Id == id)).GetValueOrDefault();
+    }
+
+    private async Task<string> SaveFile(IFormFile imageFile)
+    {
+        var newFileName = Guid.NewGuid();
+        var fileExtension = Path.GetExtension(imageFile.FileName);
+        var path = $"/Files/Companies/{newFileName}{fileExtension}";
+        try
+        {
+            await using var fileStream = new FileStream(
+                _environment.WebRootPath + path, FileMode.CreateNew);
+
+            await imageFile.CopyToAsync(fileStream);
+        }
+        catch (IOException e)
+        {
+            // await SaveFile(imageFile);
+
+            Console.WriteLine(e.Message);
+        }
+
+        return path;
     }
 }
