@@ -12,10 +12,12 @@ namespace NetCourses.Controllers.Jobs;
 public class JobsController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly IWebHostEnvironment _environment;
 
-    public JobsController(AppDbContext context)
+    public JobsController(AppDbContext context, IWebHostEnvironment environment)
     {
         _context = context;
+        _environment = environment;
     }
 
     // GET: api/v1/Jobs
