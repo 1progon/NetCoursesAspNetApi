@@ -8,26 +8,30 @@ namespace NetCourses.DB.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
+
+            migrationBuilder
+                .DropColumn("VideoType", "Courses");
+
+            migrationBuilder.AddColumn<int>(
                 name: "VideoType",
                 table: "Courses",
                 type: "integer",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
+                nullable: true);
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
+            
+            migrationBuilder
+                .DropColumn("VideoType", "Courses");
+            
+            migrationBuilder.AddColumn<string>(
                 name: "VideoType",
                 table: "Courses",
                 type: "text",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "integer",
-                oldNullable: true);
+                nullable: true);
+  
         }
     }
 }
