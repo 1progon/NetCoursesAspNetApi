@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NetCourses.Data;
 using NetCourses.Dto;
 using NetCourses.Models;
+using NetCourses.Models.Companies;
 using NetCourses.Models.Jobs;
 
 namespace NetCourses.Controllers.Jobs;
@@ -31,7 +32,8 @@ public class JobsController : ControllerBase
 
         var jobs = await _context.Jobs
             .Include(j => j.Paid)
-            .OrderBy(j => j.Id)
+            .Include(j => j.Company)
+            .OrderByDescending(j => j.UpdatedAt)
             .Skip(offset)
             .Take(limit)
             .ToListAsync();
