@@ -31,7 +31,9 @@ public class CoursesController : ControllerBase
         {
             Data = new GetItemsDto<Course>
             {
-                Items = await _context.Courses.OrderBy(c => c.Id)
+                Items = await _context.Courses
+                    .OrderBy(c => c.Id)
+                    .Include(c => c.Language)
                     .Skip(offset)
                     .Take(limit)
                     .ToListAsync(),
@@ -52,6 +54,7 @@ public class CoursesController : ControllerBase
         var course = await _context.Courses
             .Include(c
                 => c.CourseVideos.OrderBy(v => v.Order))
+            .Include(c => c.Language)
             .SingleOrDefaultAsync(c => c.Id == id);
 
         if (course == null) return NotFound();
