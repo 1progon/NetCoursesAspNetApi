@@ -1,6 +1,6 @@
-namespace NetCourses.Enums.Jobs;
+namespace NetCourses.Enums;
 
-public enum JobStatus
+public enum Status
 {
     Undefined = 0,
     Moderation = 1,
