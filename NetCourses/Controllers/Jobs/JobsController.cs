@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetCourses.Data;
@@ -81,6 +82,7 @@ public class JobsController : ControllerBase
     // PUT: api/Jobs/5
     // To protect from over posting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id:long}")]
+    [Authorize]
     public async Task<IActionResult> PutJob(long id, Job job)
     {
         if (id != job.Id) return BadRequest();
@@ -161,6 +163,7 @@ public class JobsController : ControllerBase
 
     // DELETE: api/Jobs/5
     [HttpDelete("{id:long}")]
+    [Authorize]
     public async Task<IActionResult> DeleteJob(long id)
     {
         if (!_context.Jobs.Any()) return NotFound();
