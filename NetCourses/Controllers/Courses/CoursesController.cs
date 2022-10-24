@@ -40,6 +40,7 @@ public class CoursesController : ControllerBase
                     .Include(c => c.Language)
                     .Skip(offset)
                     .Take(limit)
+                    .Where(c => c.Status == Status.Active)
                     .ToListAsync(),
                 Limit = limit,
                 Offset = offset,
@@ -56,6 +57,7 @@ public class CoursesController : ControllerBase
         if (!_context.Courses.Any()) return NotFound();
 
         var course = await _context.Courses
+            .Where(c => c.Status == Status.Active)
             .Include(c
                 => c.CourseVideos.OrderBy(v => v.Order))
             .Include(c => c.Language)
