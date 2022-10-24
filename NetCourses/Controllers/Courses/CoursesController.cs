@@ -1,7 +1,11 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetCourses.Data;
 using NetCourses.Dto;
+using NetCourses.Dto.Courses;
+using NetCourses.Enums;
 using NetCourses.Models;
 using NetCourses.Models.Courses;
 
@@ -70,6 +74,7 @@ public class CoursesController : ControllerBase
     // PUT: api/Courses/5
     // To protect from over posting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id:long}")]
+    [Authorize]
     public async Task<IActionResult> PutCourse(long id, Course course)
     {
         if (id != course.Id) return BadRequest();
@@ -105,6 +110,7 @@ public class CoursesController : ControllerBase
 
     // DELETE: api/Courses/5
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteCourse(long id)
     {
         if (!_context.Courses.Any()) return NotFound();
