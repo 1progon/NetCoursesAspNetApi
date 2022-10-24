@@ -78,6 +78,9 @@ namespace NetCourses.DB.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("text");
 
+                    b.Property<int?>("LanguageId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Link")
                         .HasColumnType("text");
 
@@ -87,6 +90,9 @@ namespace NetCourses.DB.Migrations
 
                     b.Property<DateOnly>("PostedByAuthor")
                         .HasColumnType("date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -104,6 +110,8 @@ namespace NetCourses.DB.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
 
                     b.ToTable("Courses");
                 });
@@ -233,6 +241,32 @@ namespace NetCourses.DB.Migrations
                         .IsUnique();
 
                     b.ToTable("JobsPaid");
+                });
+
+            modelBuilder.Entity("NetCourses.Models.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
+            modelBuilder.Entity("NetCourses.Models.Courses.Course", b =>
+                {
+                    b.HasOne("NetCourses.Models.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("NetCourses.Models.Courses.CourseVideos", b =>
