@@ -100,14 +100,40 @@ public class CoursesController : ControllerBase
     // POST: api/Courses
     // To protect from over posting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Course>> PostCourse(Course course)
+    public async Task<ActionResult<Response<Course>>> PostCourse(
+        [FromForm] string courseDto,
+        [FromForm] IFormFile file)
     {
-        if (!_context.Courses.Any()) return Problem("Entity set 'AppDbContext.Courses'  is null.");
+        var courseForm = JsonSerializer.Deserialize<PostCourseDto>(courseDto);
+
+        if (courseForm == null) return UnprocessableEntity();
+
+        var course = new Course
+        {
+            Name = courseForm.Name,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            Link = courseForm.Link,
+            VideoLink = courseForm.VideoLink,
+            VideoSource = courseForm.VideoSource,
+            PostedByAuthor = DateOnly.Parse(courseForm.PostedByAuthor.ToShortDateString()),
+            Description = courseForm.Description,
+            Article = courseForm.Article,
+            Image = await SaveFile(file),
+            VideoType = courseForm.VideoType,
+            Status = Status.Moderation,
+            LanguageId = courseForm.LanguageId,
+        };
+
 
         _context.Courses.Add(course);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetCourse", new {id = course.Id}, course);
+        return new Response<Course>
+        {
+            Data = course,
+            ResponseCode = 200,
+        };
     }
 
     // DELETE: api/Courses/5
