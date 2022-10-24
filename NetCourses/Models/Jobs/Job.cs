@@ -1,4 +1,4 @@
-﻿using NetCourses.Enums.Jobs;
+﻿using NetCourses.Enums;
 using NetCourses.Models.Companies;
 
 namespace NetCourses.Models.Jobs;
@@ -20,5 +20,5 @@ public class Job : BaseModel
 
     public JobsPaid? Paid { get; set; }
 
-    public JobStatus Status { get; set; }
+    public Status Status { get; set; }
 }
