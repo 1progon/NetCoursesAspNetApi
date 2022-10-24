@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NetCourses.Data;
 using NetCourses.Dto;
 using NetCourses.Dto.Jobs;
+using NetCourses.Enums.Jobs;
 using NetCourses.Models;
 using NetCourses.Models.Companies;
 using NetCourses.Models.Jobs;
@@ -38,6 +39,7 @@ public class JobsController : ControllerBase
             .OrderByDescending(j => j.UpdatedAt)
             .Skip(offset)
             .Take(limit)
+            .Where(j => j.Status == JobStatus.Active)
             .ToListAsync();
 
         return new Response<GetItemsDto<Job>>
@@ -61,6 +63,10 @@ public class JobsController : ControllerBase
 
         var job = await _context.Jobs
             .Include(j => j.Company)
+            .Where(j => j.Status == JobStatus.Active ||
+                        j.Status == JobStatus.Moderation ||
+                        j.Status == JobStatus.ArchivedByUser ||
+                        j.Status == JobStatus.ArchivedByAdmin)
             .SingleOrDefaultAsync(j => j.Id == id);
 
         if (job == null) return NotFound();
@@ -131,7 +137,7 @@ public class JobsController : ControllerBase
             Url = jobForm.UrlToJob,
             Tags = jobForm.Tags?.Split(","),
             Company = company,
-            
+            Status = JobStatus.Moderation,
         };
 
         _context.Jobs.Add(job);

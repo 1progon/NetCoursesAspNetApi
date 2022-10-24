@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetCourses.Data;
 using NetCourses.Dto;
+using NetCourses.Enums.Jobs;
 using NetCourses.Models;
 
 namespace NetCourses.Controllers;
@@ -29,6 +30,7 @@ public class HomepageController : ControllerBase
                     .OrderByDescending(j => j.Id)
                     .Skip(0)
                     .Take(5)
+                    .Where(j => j.Status == JobStatus.Active)
                     .ToListAsync(),
 
                 // get homepage courses
