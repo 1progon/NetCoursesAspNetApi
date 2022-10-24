@@ -2,3 +2,4 @@ appsettings.json
 /Data/migration.sql
 /Data/migrations.sql
 /wwwroot/Files/Companies/
+/wwwroot/Files/Courses/
