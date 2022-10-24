@@ -12,7 +12,13 @@ namespace NetCourses.Controllers.Courses;
 public class CoursesController : ControllerBase
 {
     private readonly AppDbContext _context;
-    public CoursesController(AppDbContext context) => _context = context;
+    private readonly IWebHostEnvironment _environment;
+
+    public CoursesController(AppDbContext context, IWebHostEnvironment environment)
+    {
+        _context = context;
+        _environment = environment;
+    }
 
     // GET: api/v1/Courses
     [HttpGet]
