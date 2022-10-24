@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NetCourses.Models;
 using NetCourses.Models.Companies;
 using NetCourses.Models.Courses;
 using NetCourses.Models.Jobs;
@@ -30,4 +31,7 @@ public class AppDbContext : DbContext
     // Courses
     public DbSet<Course> Courses { get; set; } = null!;
     public DbSet<CourseVideos> CoursesVideos { get; set; } = null!;
+
+    // languages
+    public DbSet<Language> Languages { get; set; } = null!;
 }
