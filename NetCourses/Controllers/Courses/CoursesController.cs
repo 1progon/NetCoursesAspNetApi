@@ -130,4 +130,26 @@ public class CoursesController : ControllerBase
     {
         return (_context.Courses?.Any(e => e.Id == id)).GetValueOrDefault();
     }
+
+    private async Task<string> SaveFile(IFormFile imageFile)
+    {
+        var newFileName = Guid.NewGuid();
+        var fileExtension = Path.GetExtension(imageFile.FileName);
+        var path = $"/Files/Courses/{newFileName}{fileExtension}";
+        try
+        {
+            await using var fileStream = new FileStream(
+                _environment.WebRootPath + path, FileMode.CreateNew);
+
+            await imageFile.CopyToAsync(fileStream);
+        }
+        catch (IOException e)
+        {
+            // await SaveFile(imageFile);
+
+            Console.WriteLine(e.Message);
+        }
+
+        return path;
+    }
 }
