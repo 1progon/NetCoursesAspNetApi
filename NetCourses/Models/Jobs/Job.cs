@@ -1,4 +1,5 @@
-﻿using NetCourses.Models.Companies;
+﻿using NetCourses.Enums.Jobs;
+using NetCourses.Models.Companies;
 
 namespace NetCourses.Models.Jobs;
 
@@ -18,4 +19,6 @@ public class Job : BaseModel
     public long CompanyId { get; set; }
 
     public JobsPaid? Paid { get; set; }
+
+    public JobStatus Status { get; set; }
 }
