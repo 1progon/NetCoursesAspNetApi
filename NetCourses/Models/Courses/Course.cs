@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using NetCourses.Enums;
 using NetCourses.Enums.Courses;
 
 namespace NetCourses.Models.Courses;
@@ -20,6 +20,10 @@ public class Course : BaseModel
 
     public CourseVideoType VideoType { get; set; }
 
+    public Status Status { get; set; }
+
+    public Language? Language { get; set; }
+    public int? LanguageId { get; set; }
 
     public IList<CourseVideos> CourseVideos { get; set; } = new List<CourseVideos>();
 }
