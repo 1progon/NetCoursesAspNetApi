@@ -157,15 +157,16 @@ public class CoursesController : ControllerBase
         return (_context.Courses?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 
+    //todo move method to separate for diff controllers
     private async Task<string> SaveFile(IFormFile imageFile)
     {
         var newFileName = Guid.NewGuid();
         var fileExtension = Path.GetExtension(imageFile.FileName);
-        var path = $"/Files/Courses/{newFileName}{fileExtension}";
+        var path = $"/images/Files/Courses/{newFileName}{fileExtension}";
         try
         {
             await using var fileStream = new FileStream(
-                _environment.WebRootPath + path, FileMode.CreateNew);
+                _environment.ContentRootPath + path, FileMode.CreateNew);
 
             await imageFile.CopyToAsync(fileStream);
         }
