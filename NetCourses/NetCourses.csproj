@@ -28,9 +28,9 @@
         <Folder Include="Controllers\Courses"/>
         <Folder Include="Data\Migrations"/>
         <Folder Include="Enums\Jobs"/>
-        <Folder Include="wwwroot"/>
-        <Folder Include="wwwroot\Files\Companies"/>
-        <Folder Include="wwwroot\Files\Courses"/>
+        <Folder Include="images"/>
+        <Folder Include="images\Files\Companies"/>
+        <Folder Include="images\Files\Courses"/>
     </ItemGroup>
 
 </Project>
