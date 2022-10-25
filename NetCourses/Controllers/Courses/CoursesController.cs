@@ -36,7 +36,7 @@ public class CoursesController : ControllerBase
             Data = new GetItemsDto<Course>
             {
                 Items = await _context.Courses
-                    .OrderBy(c => c.Id)
+                    .OrderByDescending(c => c.PostedByAuthor)
                     .Include(c => c.Language)
                     .Skip(offset)
                     .Take(limit)

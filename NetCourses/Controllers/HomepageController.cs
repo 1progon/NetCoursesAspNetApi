@@ -35,7 +35,7 @@ public class HomepageController : ControllerBase
 
                 // get homepage courses
                 Courses = await _context.Courses
-                    .OrderBy(c => c.Id)
+                    .OrderByDescending(c => c.PostedByAuthor)
                     .Include(c => c.Language)
                     .Skip(0)
                     .Take(5)
